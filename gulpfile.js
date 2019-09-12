@@ -40,9 +40,24 @@ const livereload = cb => {
     console.log("gulp livereload running");
     cb();
 };
+
+const css = function(cb) {
+    // body omitted
+    console.log("gulp css running");
+    cb();
+};
+
+const javascript = function(cb) {
+    // body omitted
+    console.log("gulp javascript running");
+    cb();
+};
+
+exports.build1 = parallel(css, javascript);
+exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
 exports.watch = watch;
-exports.build = build;
+// exports.build = build;
 exports.copy = copy;
 exports.minify = minify;
 /*
