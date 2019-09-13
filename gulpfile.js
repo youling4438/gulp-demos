@@ -1,5 +1,13 @@
 var gulp = require("gulp");
-var { series, parallel } = gulp;
+var { series, parallel, src, dest } = gulp;
+var { EventEmitter } = require("events");
+
+function streamTask() {
+    console.log("gulp streamTask running");
+    return src("*.js").pipe(dest("dist"));
+}
+
+exports.streamTask = streamTask;
 
 // default task
 // gulp.task("default", () => {
@@ -53,9 +61,34 @@ const javascript = function(cb) {
     cb();
 };
 
+const task3 = cb => {
+    console.log("********task3 running********");
+    cb();
+    src("**.html").pipe(dest("dist/task3"));
+};
+
+const promiseTask = cb => {
+    cb();
+    console.log("promise task");
+    return Promise.resolve("the value is ignored!");
+};
+
+const eventTask = cb => {
+    cb();
+    console.log("event task");
+    const emitter = new EventEmitter();
+    setTimeout(() => {
+        emitter.emit("哈哈，我是来自emit传回的信息！");
+    }, 500);
+    return emitter;
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
+exports.task3 = task3;
+exports.promise = promiseTask;
+exports.eventTask = eventTask;
 exports.watch = watch;
 // exports.build = build;
 exports.copy = copy;
