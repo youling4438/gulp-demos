@@ -1,22 +1,23 @@
 {
-  "name": "demo01",
-  "version": "1.0.0",
-  "description": "gulp demo",
-  "main": "gulpfile.js",
-  "dependencies": {
-    "gulp": "^4.0.2"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "gulp-babel": "^8.0.0",
-    "gulp-uglify": "^3.0.2"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "gulp"
-  ],
-  "author": "youling",
-  "license": "ISC"
+    "name": "demo01",
+    "version": "1.0.0",
+    "description": "gulp demo",
+    "main": "gulpfile.js",
+    "dependencies": {
+        "gulp": "^4.0.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.6.0",
+        "@babel/preset-env": "^7.6.0",
+        "gulp-babel": "^8.0.0",
+        "gulp-uglify": "^3.0.2"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "gulp"
+    ],
+    "author": "youling",
+    "license": "ISC"
 }

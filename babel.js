@@ -4,3 +4,4 @@ const obj = { a: "a", c: "c", arr };
 const { a, b } = obj;
 console.log("a", a);
 console.log("b", b);
+arr.map(e => e * 2);

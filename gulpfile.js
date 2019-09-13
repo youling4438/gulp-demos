@@ -115,7 +115,7 @@ exports.streamTask = streamTask;
 exports.promise = promiseTask;
 exports.eventTask = eventTask;
 exports.babelTask = babelTask;
-exports.filestreamTask = fileStreamTask;
+exports.fileStreamTask = fileStreamTask;
 
 exports.watch = watch;
 // exports.build = build;
