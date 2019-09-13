@@ -1,5 +1,6 @@
-const { series, parallel } = require("gulp");
-
+var gulp = require("gulp");
+var series = gulp.series;
+var parallel = gulp.parallel;
 function clean(cb) {
     // body omitted
     cb();

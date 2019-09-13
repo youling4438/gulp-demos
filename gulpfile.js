@@ -1,13 +1,13 @@
 var gulp = require("gulp");
 var { series, parallel, src, dest } = gulp;
 var { EventEmitter } = require("events");
+const babel = require("gulp-babel");
+const uglify = require("gulp-uglify");
 
 function streamTask() {
     console.log("gulp streamTask running");
     return src("*.js").pipe(dest("dist"));
 }
-
-exports.streamTask = streamTask;
 
 // default task
 // gulp.task("default", () => {
@@ -83,12 +83,40 @@ const eventTask = cb => {
     return emitter;
 };
 
+const babelTask = cb => {
+    cb();
+    console.log("babel *****  task");
+    return src("babel.js")
+        .pipe(babel())
+        .pipe(dest("./dist/babel"));
+};
+
+const fileStreamTask = cb => {
+    cb();
+    console.log("file stream");
+    return src("babel.js")
+        .pipe(babel())
+        .pipe(src("gulpfile.js"))
+        .pipe(babel())
+        .pipe(
+            uglify({
+                mangle: true, //类型：Boolean 默认：true 是否修改变量名
+                compress: true //类型：Boolean 默认：true 是否完全压缩
+            })
+        )
+        .pipe(dest("dist/stream"));
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
 exports.task3 = task3;
+exports.streamTask = streamTask;
 exports.promise = promiseTask;
 exports.eventTask = eventTask;
+exports.babelTask = babelTask;
+exports.filestreamTask = fileStreamTask;
+
 exports.watch = watch;
 // exports.build = build;
 exports.copy = copy;
