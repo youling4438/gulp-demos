@@ -94,17 +94,30 @@ const babelTask = cb => {
 const fileStreamTask = cb => {
     cb();
     console.log("file stream");
-    return src("babel.js")
-        .pipe(babel())
-        .pipe(src("gulpfile.js"))
-        .pipe(babel())
-        .pipe(
-            uglify({
-                mangle: true, //类型：Boolean 默认：true 是否修改变量名
-                compress: true //类型：Boolean 默认：true 是否完全压缩
-            })
-        )
-        .pipe(dest("dist/stream"));
+    return (
+        src(["babel.js", "gulpfile.js"])
+            .pipe(babel())
+            // .pipe(src("gulpfile.js"))
+            // .pipe(babel())
+            .pipe(
+                uglify({
+                    mangle: true, //类型：Boolean 默认：true 是否修改变量名
+                    compress: true //类型：Boolean 默认：true 是否完全压缩
+                })
+            )
+            .pipe(dest("dist/stream"))
+    );
+    // return src("babel.js")
+    //     .pipe(babel())
+    //     .pipe(src("gulpfile.js"))
+    //     .pipe(babel())
+    //     .pipe(
+    //         uglify({
+    //             mangle: true, //类型：Boolean 默认：true 是否修改变量名
+    //             compress: true //类型：Boolean 默认：true 是否完全压缩
+    //         })
+    //     )
+    //     .pipe(dest("dist/stream"));
 };
 
 exports.build1 = parallel(css, javascript);
