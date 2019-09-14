@@ -3,6 +3,7 @@ var { series, parallel, src, dest } = gulp;
 var { EventEmitter } = require("events");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
+const rename = require("gulp-rename");
 
 function streamTask() {
     console.log("gulp streamTask running");
@@ -120,6 +121,25 @@ const fileStreamTask = cb => {
     //     .pipe(dest("dist/stream"));
 };
 
+const renameTask = cb => {
+    cb();
+    console.log("rename task");
+    return (
+        src(["babel.js", "gulpfile.js"])
+            .pipe(babel())
+            // .pipe(src("gulpfile.js"))
+            // .pipe(babel())
+            .pipe(
+                uglify({
+                    mangle: true, //类型：Boolean 默认：true 是否修改变量名
+                    compress: true //类型：Boolean 默认：true 是否完全压缩
+                })
+            )
+            .pipe(rename({ extname: ".min.js" }))
+            .pipe(dest("dist/stream"))
+    );
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
@@ -129,6 +149,7 @@ exports.promise = promiseTask;
 exports.eventTask = eventTask;
 exports.babelTask = babelTask;
 exports.fileStreamTask = fileStreamTask;
+exports.renameTask = renameTask;
 
 exports.watch = watch;
 // exports.build = build;
