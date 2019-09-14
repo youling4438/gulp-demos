@@ -4,6 +4,9 @@ var { EventEmitter } = require("events");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 const rename = require("gulp-rename");
+const gulpIf = require("gulp-if");
+const rollup = require("rollup");
+const del = require("delete");
 
 function streamTask() {
     console.log("gulp streamTask running");
@@ -140,6 +143,40 @@ const renameTask = cb => {
     );
 };
 
+const asyncTask = async cb => {
+    cb();
+    console.log("async task");
+    const bundle = await rollup.rollup({
+        input: "foo.js"
+    });
+
+    return bundle.write({
+        file: "dist/rollup/bundle.js",
+        format: "iife"
+    });
+};
+
+const delTask = cb => {
+    // Use the `delete` module directly, instead of using gulp-rimraf
+    console.log("delTask running");
+    del(["dist"], cb);
+};
+
+const isJavaScript = file => file.extname === "js";
+
+const ifTask = cb => {
+    cb();
+    console.log("if Task");
+    return (
+        src(["*.js", "*.css", "*.html"])
+            .pipe(gulpIf(isJavaScript, rename({ extname: ".if.js" })))
+            // .pipe(babel())
+            // .pipe(uglify())
+            // .pipe(rename({ extname: ".min.js" }))
+            .pipe(dest("dist/ifTask"))
+    );
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
@@ -150,6 +187,9 @@ exports.eventTask = eventTask;
 exports.babelTask = babelTask;
 exports.fileStreamTask = fileStreamTask;
 exports.renameTask = renameTask;
+exports.asyncTask = asyncTask;
+exports.delTask = delTask;
+exports.ifTask = ifTask;
 
 exports.watch = watch;
 // exports.build = build;
