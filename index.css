@@ -1,4 +1,14 @@
 /* just for test gulp */
+a:hover {
+    color: #ff00d5;
+    text-decoration: none;
+}
+
+a:link {
+    color: #f00d50;
+}
+
+/* just for test gulp */
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 

@@ -1,5 +1,5 @@
 var gulp = require("gulp");
-var { series, parallel, src, dest } = gulp;
+var { series, parallel, src, dest, watch } = gulp;
 var { EventEmitter } = require("events");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
@@ -33,9 +33,27 @@ const copy = cb => {
     cb();
 };
 
-const watch = cb => {
+const delCss = cb => del(["dist/**.css"], cb);
+const copyCss = cb => src("index.css").pipe(dest("dist/", cb));
+const delJs = cb => del(["dist/**.js"], cb);
+const buildJs = cb =>
+    src("foo.js")
+        .pipe(babel())
+        .pipe(uglify())
+        .pipe(rename({ extname: ".min.js" }))
+        .pipe(
+            dest("dist/"),
+            cb
+        );
+
+const copyJs = cb => src("foo.js").pipe(dest("dist/", cb));
+
+const watchTask = cb => {
     console.log("gulp watch running");
     cb();
+    watch("**.css", series(delCss, copyCss));
+    // watch("foo.js", series(delJs, copyJs));
+    watch("foo.js", series(delJs, buildJs, copyJs));
 };
 
 const task1 = cb => {
@@ -199,8 +217,8 @@ exports.renameTask = renameTask;
 exports.asyncTask = asyncTask;
 exports.delTask = delTask;
 exports.ifTask = ifTask;
+exports.watchTask = watchTask;
 
-exports.watch = watch;
 // exports.build = build;
 exports.copy = copy;
 exports.minify = minify;
