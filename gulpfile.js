@@ -162,19 +162,19 @@ const delTask = cb => {
     del(["dist"], cb);
 };
 
-const isJavaScript = file => file.extname === "js";
-
 const ifTask = cb => {
+    const isJavaScript = file => file.extname === ".js";
+    const isHtml = file => file.extname === ".html";
+    const isCss = file => file.extname === ".css";
     cb();
     console.log("if Task");
-    return (
-        src(["*.js", "*.css", "*.html"])
-            .pipe(gulpIf(isJavaScript, rename({ extname: ".if.js" })))
-            // .pipe(babel())
-            // .pipe(uglify())
-            // .pipe(rename({ extname: ".min.js" }))
-            .pipe(dest("dist/ifTask"))
-    );
+    return src(["*.js", "*.css", "*.html"])
+        .pipe(gulpIf(isJavaScript, babel()))
+        .pipe(gulpIf(isJavaScript, uglify()))
+        .pipe(gulpIf(isJavaScript, rename({ extname: ".min.js" })))
+        .pipe(gulpIf(isHtml, rename({ extname: ".if.html" })))
+        .pipe(gulpIf(isCss, rename({ extname: ".if.css" })))
+        .pipe(dest("dist/ifTask"));
 };
 
 exports.build1 = parallel(css, javascript);
