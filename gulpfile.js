@@ -163,9 +163,18 @@ const delTask = cb => {
 };
 
 const ifTask = cb => {
-    const isJavaScript = file => file.extname === ".js";
-    const isHtml = file => file.extname === ".html";
-    const isCss = file => file.extname === ".css";
+    const isJavaScript = file => {
+        file.extname === ".js" && console.log(file.contents.toString());
+        return file.extname === ".js";
+    };
+    const isHtml = file => {
+        // console.log(file.contents.toString());
+        return file.extname === ".html";
+    };
+    const isCss = file => {
+        // console.log(file.contents.toString());
+        return file.extname === ".css";
+    };
     cb();
     console.log("if Task");
     return src(["*.js", "*.css", "*.html"])
