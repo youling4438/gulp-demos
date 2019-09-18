@@ -37,12 +37,12 @@ const delCss = cb => del(["dist/**.css"], cb);
 const copyCss = cb => src("**.css").pipe(dest("dist/", cb));
 const delJs = cb => del(["dist/**.js"], cb);
 const buildJs = cb =>
-    src("foo.js")
+    src(["foo.js"], { sourcemaps: true })
         .pipe(babel())
         .pipe(uglify())
         .pipe(rename({ extname: ".min.js" }))
         .pipe(
-            dest("dist/"),
+            dest("dist/", { sourcemaps: "" }),
             cb
         );
 
