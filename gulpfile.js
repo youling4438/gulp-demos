@@ -34,7 +34,7 @@ const copy = cb => {
 };
 
 const delCss = cb => del(["dist/**.css"], cb);
-const copyCss = cb => src("index.css").pipe(dest("dist/", cb));
+const copyCss = cb => src("**.css").pipe(dest("dist/", cb));
 const delJs = cb => del(["dist/**.js"], cb);
 const buildJs = cb =>
     src("foo.js")
@@ -51,7 +51,7 @@ const copyJs = cb => src("foo.js").pipe(dest("dist/", cb));
 const watchTask = cb => {
     console.log("gulp watch running");
     cb();
-    watch("**.css", series(delCss, copyCss));
+    watch("**.css", { events: "all" }, series(delCss, copyCss));
     // watch("foo.js", series(delJs, copyJs));
     watch("foo.js", series(delJs, buildJs, copyJs));
 };

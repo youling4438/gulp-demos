@@ -8,6 +8,9 @@ a:link {
     color: #f00d50;
 }
 
+a:visited {
+    color: #00d5ff;
+}
 /* just for test gulp */
 
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
