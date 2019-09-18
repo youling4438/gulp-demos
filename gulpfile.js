@@ -56,6 +56,15 @@ const watchTask = cb => {
     watch("foo.js", series(delJs, buildJs, copyJs));
 };
 
+const watchTaskConfig = cb => {
+    console.log("gulp watch with config running");
+    watch(["a.js", "b.js"], { ignoreInitial: false }, cb => {
+        cb();
+        console.log("watch.js");
+    });
+    cb();
+};
+
 const task1 = cb => {
     console.log("gulp watch running");
     cb();
@@ -218,6 +227,7 @@ exports.asyncTask = asyncTask;
 exports.delTask = delTask;
 exports.ifTask = ifTask;
 exports.watchTask = watchTask;
+exports.watchTaskConfig = watchTaskConfig;
 
 // exports.build = build;
 exports.copy = copy;
