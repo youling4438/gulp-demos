@@ -1,5 +1,5 @@
 var gulp = require("gulp");
-var { series, parallel, src, dest, watch } = gulp;
+var { series, parallel, src, dest, watch, symlink } = gulp;
 var { EventEmitter } = require("events");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
@@ -213,6 +213,12 @@ const ifTask = cb => {
         .pipe(dest("dist/ifTask"));
 };
 
+const linkTask = cb => {
+    console.log("link task running");
+    cb();
+    return src(["foo.js"]).pipe(symlink("dist/link"));
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
@@ -228,6 +234,7 @@ exports.delTask = delTask;
 exports.ifTask = ifTask;
 exports.watchTask = watchTask;
 exports.watchTaskConfig = watchTaskConfig;
+exports.linkTask = linkTask;
 
 // exports.build = build;
 exports.copy = copy;
