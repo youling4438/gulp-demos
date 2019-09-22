@@ -239,6 +239,37 @@ const watchLastRunTask = cb => {
     watch("**.{jpg,png}", lastRunTask);
 };
 
+const watcherTask = cb => {
+    console.log("watcher task run");
+
+    // watch Chokidar实例
+    const watcher = watch("**.{js,css,html}");
+
+    /* events list :
+    可以观察到的事件有
+    'add'、'addDir'、'change'、'unlink'、
+    'unlinkDir'、'ready'、'error'、 或 'all'.
+    */
+    watcher.on("change", (path, stats) => {
+        console.log(`File ${path} was changed`);
+        console.log("stats:", stats);
+    });
+
+    watcher.on("add", (path, stats) => {
+        console.log(`File ${path} was add`);
+        console.log("stats:", stats);
+    });
+
+    watcher.on("unlink", (path, stats) => {
+        console.log(`File ${path} was unlink`);
+        console.log("stats:", stats);
+    });
+
+    // watcher.close();
+
+    cb();
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
@@ -256,6 +287,7 @@ exports.watchTask = watchTask;
 exports.watchTaskConfig = watchTaskConfig;
 exports.linkTask = linkTask;
 exports.watchLastRunTask = watchLastRunTask;
+exports.watcherTask = watcherTask;
 
 // exports.build = build;
 exports.copy = copy;

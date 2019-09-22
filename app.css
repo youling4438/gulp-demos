@@ -7,3 +7,7 @@ body {
 main {
     display: block;
 }
+
+a {
+    text-decoration-style: none;
+}
