@@ -12,6 +12,7 @@
         "delete": "^1.1.0",
         "gulp-babel": "^8.0.0",
         "gulp-if": "^3.0.0",
+        "gulp-imagemin": "^6.1.0",
         "gulp-rename": "^1.4.0",
         "gulp-uglify": "^3.0.2",
         "rollup": "^1.21.2"

@@ -1,10 +1,11 @@
 var gulp = require("gulp");
-var { series, parallel, src, dest, watch, symlink } = gulp;
+var { series, parallel, src, dest, watch, symlink, lastRun } = gulp;
 var { EventEmitter } = require("events");
 const babel = require("gulp-babel");
 const uglify = require("gulp-uglify");
 const rename = require("gulp-rename");
 const gulpIf = require("gulp-if");
+const miniImage = require("gulp-imagemin");
 const rollup = require("rollup");
 const del = require("delete");
 
@@ -219,6 +220,25 @@ const linkTask = cb => {
     return src(["foo.js"]).pipe(symlink("dist/link"));
 };
 
+const lastRunTask = cb => {
+    cb();
+    console.log("last run task");
+    return src(["**.{jpg,png}"], { since: lastRun(lastRunTask) })
+        .pipe(
+            miniImage([
+                miniImage.jpegtran({ progressive: true }),
+                miniImage.optipng({ optimizationLevel: 5 })
+            ])
+        )
+        .pipe(dest("dist/images/"));
+};
+
+const watchLastRunTask = cb => {
+    cb();
+    console.log("watch last run task");
+    watch("**.{jpg,png}", lastRunTask);
+};
+
 exports.build1 = parallel(css, javascript);
 exports.build2 = series(clean, parallel(css, javascript));
 exports.task1 = task1;
@@ -235,6 +255,7 @@ exports.ifTask = ifTask;
 exports.watchTask = watchTask;
 exports.watchTaskConfig = watchTaskConfig;
 exports.linkTask = linkTask;
+exports.watchLastRunTask = watchLastRunTask;
 
 // exports.build = build;
 exports.copy = copy;
